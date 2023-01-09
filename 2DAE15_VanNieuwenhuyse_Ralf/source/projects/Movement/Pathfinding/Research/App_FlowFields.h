@@ -46,11 +46,28 @@ private:
 	Elite::GraphRenderer* m_pGraphRenderer{ nullptr };
 
 	DebugSettings m_DebugSettings{};
-
-	void MakeGridGraph();
-	void UpdateImGui();
-	
+		
 	int m_NrOfAgents = 50;
 	std::vector<SteeringAgent*> m_pAgents;
+
+	std::vector<int> m_CostField;
+	std::vector<int> m_IntegrationField;
+
+	enum class VectorDir
+	{
+		invalid,
+		up,down,
+		left,right,
+		upRight,upLeft,
+		downRight,downLeft
+	};
+
+	std::vector<VectorDir> m_FlowField;
+
+	// helper function
+	void MakeGridGraph();
+	void UpdateImGui();
+	void ResetFields();
+
 };
 
