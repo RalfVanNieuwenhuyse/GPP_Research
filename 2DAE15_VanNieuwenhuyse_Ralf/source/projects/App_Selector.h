@@ -12,7 +12,8 @@
 //#define ActiveApp_FSM
 //#define ActiveApp_BT
 //#define ActiveApp_InMap
-#define ActiveApp_InMapAgario
+
+#define ActiveApp_FlowFields
 
 
 //---------- Registered Applications -----------
@@ -68,10 +69,11 @@ typedef App_AgarioGame_BT CurrentApp;
 typedef App_InfluenceMap CurrentApp;
 #endif
 
-#ifdef ActiveApp_InMapAgario
-#include "projects/DecisionMaking/InfluenceMaps/App_AgarioGame_BT.h"
-typedef App_AgarioGame_BT CurrentApp;
+#ifdef ActiveApp_FlowFields
+#include "projects/Movement/Pathfinding/Research/App_FlowFields.h"
+typedef App_FlowFields CurrentApp;
 #endif
+
 
 class App_Selector {
 public: 
