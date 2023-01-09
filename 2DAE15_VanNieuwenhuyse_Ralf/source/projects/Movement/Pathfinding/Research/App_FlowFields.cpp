@@ -20,23 +20,41 @@ App_FlowFields::~App_FlowFields()
 
 void App_FlowFields::Start()
 {
+	float worldWith{ static_cast<float>(COLUMNS * m_SizeCell) };
+	float worldHeight{ static_cast<float>(ROWS * m_SizeCell) };
+
+
+	for (int i{}; i < m_NrOfAgents; ++i)
+	{
+		m_pAgents.push_back(new SteeringAgent());
+		m_pAgents[i]->SetMaxLinearSpeed(20.f);
+		m_pAgents[i]->SetAutoOrient(true);	
+
+		Vector2 randomStartPos{ static_cast<float>(rand() % static_cast<int>(worldWith-10)), 
+			static_cast<float>(rand() % static_cast<int>(worldHeight-10)) };
+		m_pAgents[i]->SetPosition(randomStartPos);
+	}
+
 	m_pGraphEditor = new GraphEditor();
 	m_pGraphRenderer = new GraphRenderer();
 	//Set Camera
-	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(90.0f);
-	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2(150.f, 75.f));
+	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(50.0f);
+	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2{ worldWith / 2.f, (ROWS * m_SizeCell) / 2.f });
 	MakeGridGraph();
 	ResetFields();
+
+	m_EndNodeIndex = 20;
 }
 
 void App_FlowFields::Update(float deltaTime)
 {
-	UpdateImGui();
-	for (auto& costCell : m_FlowField)
+	for (const auto& agent: m_pAgents)
 	{
-		std::cout << static_cast<int>(costCell) << " ";
+		agent->Update(deltaTime);
+		
 	}
-	std::cout << "\n\n";
+
+	UpdateImGui();	
 }
 
 void App_FlowFields::UpdateImGui()
