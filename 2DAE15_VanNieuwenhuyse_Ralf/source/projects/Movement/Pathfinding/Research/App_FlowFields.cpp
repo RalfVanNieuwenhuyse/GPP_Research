@@ -143,10 +143,10 @@ void App_FlowFields::CalculateCostField()
 		switch (node->GetTerrainType())
 		{
 		case TerrainType::Mud:
-			std::cout << "mud\n";
+			m_CostField[node->GetIndex()] = 5;
 			break;
 		case TerrainType::Water:
-			std::cout << "Water\n";
+			m_CostField[node->GetIndex()] = 255;
 			break;
 		default:
 			
@@ -158,8 +158,46 @@ void App_FlowFields::CalculateCostField()
 
 void App_FlowFields::CalculateIntegrationField()
 {
+	std::deque<int> openList;
+
+	//set EndNode cost to 0 
+	m_IntegrationField[m_EndNodeIndex] = 0;
+	openList.push_back(m_EndNodeIndex);
+
+	while (!openList.empty())
+	{
+		const int currentNode{ openList.front() };
+		openList.pop_front();
+
+		// loop over the connections of the current node 
+		for (const auto& connectionsNode : m_pGridGraph->GetNodeConnections(currentNode))
+		{
+			const int currentNodeNeighbor{ connectionsNode->GetTo() };
+
+			//ignore the Neighbor node if his cost is 255
+			if (m_CostField[currentNodeNeighbor] == 255)
+			{
+				continue;
+			}
+
+			//For every neighbor, set their total cost to the sum of the current node's cost and the cost found in the cost field
+			const int costNeighbor{ m_IntegrationField[currentNode] + m_CostField[currentNodeNeighbor] };
+			
+			// Add the neighbor to the back of the open list if the new calculated cost is lower than the old cost
+			if (costNeighbor < m_IntegrationField[currentNodeNeighbor])
+			{
+				//check if the current node's Neighbor is not in the list
+				if(!(std::find(begin(openList), end(openList), currentNodeNeighbor) == openList.end()))
+				{
+					openList.push_back(currentNodeNeighbor);
+				}
+				m_IntegrationField[costNeighbor] = costNeighbor;
+			}
+		}
+	}
 }
 
 void App_FlowFields::CalculateVectorField()
 {
+
 }
