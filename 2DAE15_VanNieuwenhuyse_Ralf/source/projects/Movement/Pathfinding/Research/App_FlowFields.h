@@ -30,6 +30,7 @@ private:
 		bool DrawNodeNumbers{ false };
 		bool DrawConnections{ false };
 		bool DrawConnectionCosts{ false };
+		bool DrawVectors{ false };
 	};
 
 	const bool ALLOW_DIAGONAL_MOVEMENT = true;	
@@ -62,12 +63,17 @@ private:
 		downRight,downLeft
 	};
 
-	std::vector<VectorDir> m_FlowField;
+	std::vector<VectorDir> m_VectorField;
 
 	// helper function
 	void MakeGridGraph();
 	void UpdateImGui();
 	void ResetFields();
+
+	void MakePath();
+	void CalculateCostField();
+	void CalculateIntegrationField();
+	void CalculateVectorField();
 
 };
 

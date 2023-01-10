@@ -13,8 +13,8 @@
 //#define ActiveApp_BT
 //#define ActiveApp_InMap
 
-#define ActiveApp_AStar
-//#define ActiveApp_FlowFields
+//#define ActiveApp_AStar
+#define ActiveApp_FlowFields
 
 
 //---------- Registered Applications -----------

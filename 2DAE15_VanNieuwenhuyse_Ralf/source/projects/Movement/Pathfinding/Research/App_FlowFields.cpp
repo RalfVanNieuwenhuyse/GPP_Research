@@ -44,6 +44,9 @@ void App_FlowFields::Start()
 	ResetFields();
 
 	m_EndNodeIndex = 20;
+
+
+	MakePath();
 }
 
 void App_FlowFields::Update(float deltaTime)
@@ -65,6 +68,7 @@ void App_FlowFields::Update(float deltaTime)
 				
 		m_EndNodeIndex = closestNode;
 		std::cout << "End Node has changed\n";
+		MakePath();
 		
 	}
 
@@ -73,6 +77,7 @@ void App_FlowFields::Update(float deltaTime)
 	if (m_pGraphEditor->UpdateGraph(m_pGridGraph))
 	{
 		std::cout << "Graph has been edited\n";
+		MakePath();
 	}
 
 }
@@ -102,7 +107,7 @@ void App_FlowFields::ResetFields()
 {
 	m_CostField.resize(ROWS * COLUMNS);
 	m_IntegrationField.resize(ROWS * COLUMNS);
-	m_FlowField.resize(ROWS * COLUMNS);
+	m_VectorField.resize(ROWS * COLUMNS);
 	for (auto& costCell : m_CostField)
 	{
 		costCell = 1;
@@ -113,8 +118,48 @@ void App_FlowFields::ResetFields()
 		IntegrationCell = 60000;
 	}
 
-	for (auto& vectorDir : m_FlowField)
+	for (auto& vectorDir : m_VectorField)
 	{
 		vectorDir = VectorDir::invalid;
 	}
+}
+
+void App_FlowFields::MakePath()
+{
+	if (m_EndNodeIndex == invalid_node_index)
+	{
+		return;
+	}
+	ResetFields();
+	CalculateCostField();
+	CalculateIntegrationField();
+	CalculateVectorField();
+}
+
+void App_FlowFields::CalculateCostField()
+{
+	for (const auto& node: m_pGridGraph->GetAllNodes())
+	{
+		switch (node->GetTerrainType())
+		{
+		case TerrainType::Mud:
+			std::cout << "mud\n";
+			break;
+		case TerrainType::Water:
+			std::cout << "Water\n";
+			break;
+		default:
+			
+			break;
+		}
+	}
+	
+}
+
+void App_FlowFields::CalculateIntegrationField()
+{
+}
+
+void App_FlowFields::CalculateVectorField()
+{
 }
