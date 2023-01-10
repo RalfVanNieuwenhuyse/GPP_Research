@@ -30,7 +30,9 @@ private:
 		bool DrawNodeNumbers{ false };
 		bool DrawConnections{ false };
 		bool DrawConnectionCosts{ false };
-		bool DrawVectors{ false };
+		bool DrawCostField{ false };
+		bool DrawIntergartionField{ false };
+		bool DrawVectors{ true };
 	};
 
 	const bool ALLOW_DIAGONAL_MOVEMENT = true;	
@@ -48,11 +50,14 @@ private:
 
 	DebugSettings m_DebugSettings{};
 		
-	int m_NrOfAgents = 50;
+	int m_NrOfAgents = 200;
 	std::vector<SteeringAgent*> m_pAgents;
 
 	std::vector<int> m_CostField;
+	static const int m_MaxCost{255};
+
 	std::vector<int> m_IntegrationField;
+	static const int m_MaxIntegrationCost{ 60000 };
 
 	enum class VectorDir
 	{
@@ -63,7 +68,7 @@ private:
 		downRight,downLeft
 	};
 
-	std::vector<VectorDir> m_VectorField;
+	std::vector<VectorDir> m_VectorField;	
 
 	// helper function
 	void MakeGridGraph();
@@ -74,6 +79,8 @@ private:
 	void CalculateCostField();
 	void CalculateIntegrationField();
 	void CalculateVectorField();
+
+	void DrawVectorField(Elite::Vector2 cellPos,VectorDir direction) const;
 
 };
 
