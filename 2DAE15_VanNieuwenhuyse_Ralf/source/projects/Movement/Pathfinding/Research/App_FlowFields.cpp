@@ -186,6 +186,19 @@ void App_FlowFields::UpdateImGui()
 		ImGui::Checkbox("Vector field", &m_DebugSettings.DrawVectors);
 		ImGui::Spacing();
 
+		ImGui::LabelText(std::to_string(m_pAgents.size()).c_str(),"Amount of agents:");
+		if (ImGui::Button("Add agent"))
+		{
+			AddAgent();
+		}
+		if (ImGui::Button("Add 10 agent"))
+		{
+			for (int i{0}; i < 10; i++)
+			{
+				AddAgent();
+			}			
+		}
+
 		
 		//End
 		ImGui::PopAllowKeyboardFocus();
@@ -344,10 +357,7 @@ void App_FlowFields::CalculateIntegrationField()
 				m_IntegrationField[currentNodeNeighbor] = costNeighbor;
 			}
 		}
-	}
-
-	
-	
+	}	
 }
 
 void App_FlowFields::CalculateVectorField()
@@ -357,12 +367,14 @@ void App_FlowFields::CalculateVectorField()
 	{
 		int lowestCostNeighbor{m_MaxIntegrationCost},
 			neighborNode{invalid_node_index};
+		
 		for (const auto& connectionsNode : m_pGridGraph->GetNodeConnections(i))
 		{
 			if (m_IntegrationField[connectionsNode->GetTo()]< lowestCostNeighbor)
 			{
 				lowestCostNeighbor = m_IntegrationField[connectionsNode->GetTo()];
 				neighborNode = connectionsNode->GetTo();
+				
 			}
 		}
 
@@ -456,4 +468,21 @@ void App_FlowFields::DrawVectorField(Vector2 cellPos, VectorDir direction) const
 		break;
 	}
 	DEBUGRENDERER2D->DrawDirection(cellPos,dir , (m_SizeCell / 3.f), Color{ 1.f,1.f,1.f }, DEBUGRENDERER2D->NextDepthSlice());
+}
+
+void App_FlowFields::AddAgent()
+{
+	float worldWith{ static_cast<float>(COLUMNS * m_SizeCell) };
+	float worldHeight{ static_cast<float>(ROWS * m_SizeCell) };
+
+	SteeringAgent* newAgent = new SteeringAgent();
+	
+	newAgent->SetMaxLinearSpeed(20.f);
+	newAgent->SetAutoOrient(true);
+
+	Vector2 randomStartPos{ static_cast<float>(rand() % static_cast<int>(worldWith - 10)),
+		static_cast<float>(rand() % static_cast<int>(worldHeight - 10)) };
+	newAgent->SetPosition(randomStartPos);
+
+	m_pAgents.push_back(newAgent);
 }

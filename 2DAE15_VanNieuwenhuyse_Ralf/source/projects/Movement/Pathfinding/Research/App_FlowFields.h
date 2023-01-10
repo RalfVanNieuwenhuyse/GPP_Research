@@ -50,7 +50,7 @@ private:
 
 	DebugSettings m_DebugSettings{};
 		
-	int m_NrOfAgents = 200;
+	int m_NrOfAgents = 100;
 	std::vector<SteeringAgent*> m_pAgents;
 
 	std::vector<int> m_CostField;
@@ -81,6 +81,8 @@ private:
 	void CalculateVectorField();
 
 	void DrawVectorField(Elite::Vector2 cellPos,VectorDir direction) const;
+
+	void AddAgent();
 
 };
 
