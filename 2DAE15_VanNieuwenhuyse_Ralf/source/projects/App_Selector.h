@@ -7,13 +7,14 @@
 //#define ActiveApp_CombindSteeringSteering
 //#define ActiveApp_Flocking
 //#define ActiveApp_GraphTheory
-//#define ActiveApp_AStar
+
 //#define ActiveApp_NavigationMeshes
 //#define ActiveApp_FSM
 //#define ActiveApp_BT
 //#define ActiveApp_InMap
 
-#define ActiveApp_FlowFields
+#define ActiveApp_AStar
+//#define ActiveApp_FlowFields
 
 
 //---------- Registered Applications -----------

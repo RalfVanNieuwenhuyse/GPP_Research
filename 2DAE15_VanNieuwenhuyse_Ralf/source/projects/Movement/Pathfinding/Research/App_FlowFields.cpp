@@ -29,7 +29,7 @@ void App_FlowFields::Start()
 		m_pAgents.push_back(new SteeringAgent());
 		m_pAgents[i]->SetMaxLinearSpeed(20.f);
 		m_pAgents[i]->SetAutoOrient(true);	
-
+		
 		Vector2 randomStartPos{ static_cast<float>(rand() % static_cast<int>(worldWith-10)), 
 			static_cast<float>(rand() % static_cast<int>(worldHeight-10)) };
 		m_pAgents[i]->SetPosition(randomStartPos);
@@ -38,8 +38,8 @@ void App_FlowFields::Start()
 	m_pGraphEditor = new GraphEditor();
 	m_pGraphRenderer = new GraphRenderer();
 	//Set Camera
-	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(50.0f);
-	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2{ worldWith / 2.f, (ROWS * m_SizeCell) / 2.f });
+	DEBUGRENDERER2D->GetActiveCamera()->SetZoom(60.0f);
+	DEBUGRENDERER2D->GetActiveCamera()->SetCenter(Elite::Vector2{ worldWith / 2.f, worldHeight / 2.f });
 	MakeGridGraph();
 	ResetFields();
 
@@ -54,7 +54,27 @@ void App_FlowFields::Update(float deltaTime)
 		
 	}
 
+	bool const middleMousePressed = INPUTMANAGER->IsMouseButtonUp(InputMouseButton::eMiddle);
+	if (middleMousePressed)
+	{
+		MouseData mouseData = { INPUTMANAGER->GetMouseData(Elite::InputType::eMouseButton, Elite::InputMouseButton::eMiddle) };
+		Elite::Vector2 mousePos = DEBUGRENDERER2D->GetActiveCamera()->ConvertScreenToWorld({ (float)mouseData.X, (float)mouseData.Y });
+
+		//Find closest node to click pos
+		int closestNode = m_pGridGraph->GetNodeIdxAtWorldPos(mousePos);
+				
+		m_EndNodeIndex = closestNode;
+		std::cout << "End Node has changed\n";
+		
+	}
+
 	UpdateImGui();	
+
+	if (m_pGraphEditor->UpdateGraph(m_pGridGraph))
+	{
+		std::cout << "Graph has been edited\n";
+	}
+
 }
 
 void App_FlowFields::UpdateImGui()
@@ -65,6 +85,12 @@ void App_FlowFields::Render(float deltaTime) const
 {
 	m_pGraphRenderer->RenderGraph(m_pGridGraph, m_DebugSettings.DrawNodes, m_DebugSettings.DrawNodeNumbers,
 		m_DebugSettings.DrawConnections, m_DebugSettings.DrawConnectionCosts);
+
+	//Render end node
+	if (m_EndNodeIndex != invalid_node_index)
+	{
+		m_pGraphRenderer->HighlightNodes(m_pGridGraph, { m_pGridGraph->GetNode(m_EndNodeIndex) }, END_NODE_COLOR);
+	}
 }
 
 void App_FlowFields::MakeGridGraph()
