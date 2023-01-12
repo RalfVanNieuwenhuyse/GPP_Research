@@ -53,6 +53,24 @@ I used a struct that contains 9 values: 8 for the directions and one if the dire
 
 ![afbeelding](https://user-images.githubusercontent.com/104133171/212134729-7b4fea4f-55a7-4e96-a565-f5541af9b1aa.png)
 
+### The Actors
+Now we update the actors movement according to the vector of the cell where the actor is standing in.
+
+## Performance
+
+10 X 20 cell's 200 agents: ~7 ms
+
+10 X 20 cell's 2000 agents: ~12 ms
+
+
+PC specs:
+
+Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz   2.40 GHz
+
+16 GB RAM
+
+
+
 
 
 ## sources
