@@ -23,7 +23,8 @@ Cost field, integration field and the flow field it self
 Each cell in the grid is represented by a value between 1 and 255. 
 By default, these cells have a value of 1. 
 All values between 2 and 254 are passable cells that should be avoided if they can. 
-And all cells with value 255 are impassable and there the path has to find another way. 
+And all cells with value 255 are impassable and there the path has to find another way.   
+In my implementation, I gave each terrain type a value: normal ground 1, mud 5, and water 255.
 
 Whenever the cost field changes, everything has to be recalculated.
 
@@ -57,10 +58,12 @@ I used a struct that contains 9 values: 8 for the directions and one if the dire
 Now we update the actors movement according to the vector of the cell where the actor is standing in.
 
 ## Performance
+this framework is 32 bit.  
 
-10 X 20 cell's 200 agents: ~7 ms
+10 X 20 cell's 200 agents: ~7 ms  
+10 X 20 cell's 2000 agents: ~12 ms  
 
-10 X 20 cell's 2000 agents: ~12 ms
+
 
 
 PC specs:
@@ -74,8 +77,8 @@ Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz   2.40 GHz
 
 
 ## sources
-https://www.youtube.com/watch?v=ZJZu3zLMYAc&ab_channel=PDN-PasDeNom
-https://leifnode.com/2013/12/flow-field-pathfinding/
-https://www.jdxdev.com/blog/2020/05/03/flowfields/
-https://howtorts.github.io/2014/01/04/basic-flow-fields.html
-https://medium.com/@willdavis84/flow-field-navigation-over-voxel-terrain-d4067b4c0e4b
+https://www.youtube.com/watch?v=ZJZu3zLMYAc&ab_channel=PDN-PasDeNom  
+https://leifnode.com/2013/12/flow-field-pathfinding/  
+https://www.jdxdev.com/blog/2020/05/03/flowfields/  
+https://howtorts.github.io/2014/01/04/basic-flow-fields.html  
+https://medium.com/@willdavis84/flow-field-navigation-over-voxel-terrain-d4067b4c0e4b  
