@@ -1,7 +1,6 @@
 # Flow Fields
 
-
-https://user-images.githubusercontent.com/104133171/212126417-c7cce0e7-3cb4-4a7f-882f-b476fa87fbe7.mp4
+![ezgif com-video-to-gif](https://github.com/RalfVanNieuwenhuyse/GPP_Research/assets/104133171/d5a6f0c3-2e80-4528-9f25-da1acd22ad72)
 
 
 ## Introduction
@@ -60,10 +59,13 @@ Now we update the actors movement according to the vector of the cell where the 
 ## Performance
 this framework is 32 bit.  
 
+FlowFields
 10 X 20 cell's 200 agents: ~7 ms  
-10 X 20 cell's 2000 agents: ~12 ms  
+10 X 20 cell's 2000 agents: ~12 ms
 
+navmesh a star
 
+1 agent: ~7 ms
 
 
 PC specs:
